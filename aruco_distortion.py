@@ -1,3 +1,9 @@
+"""
+文件用途：ArUco 位姿检测（使用标定内参 + 畸变系数）
+- 已写入标定内参与真实畸变系数 [k1, k2, p1, p2, k3]，分辨率 1280x720
+- 画面显示标签 XYZ 位置、欧拉角、直线距离并绘制坐标轴
+- 运行：python aruco_distortion.py，按 q 退出
+"""
 import cv2
 import cv2.aruco as aruco
 import numpy as np
