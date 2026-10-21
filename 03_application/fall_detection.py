@@ -2,7 +2,7 @@
 文件用途：跌倒检测演示
 - 实时检测 ArUco 标签姿态，当俯仰角（Pitch）绝对值超过阈值（默认 45°）时判定为摔倒
 - 适用场景：标签贴于助行车使用者身上，姿态异常时画面红框并大字报警
-- 运行：python fall_detection.py，按 q 退出
+- 运行：python 03_application/fall_detection.py，按 q 退出
 """
 import cv2
 import cv2.aruco as aruco

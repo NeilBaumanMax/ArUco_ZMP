@@ -3,6 +3,7 @@
 - 使用 9x6 棋盘格（每格 25mm），强制分辨率 1280x720（须与识别程序一致）
 - 操作：棋盘格稳定检测时按 s 保存（建议 15 张以上），按 c 计算，按 q 退出
 - 结果：标定结果打印在终端，复制到检测脚本的 camera_matrix / dist_coeffs
+- 运行：python 01_calibration/camera_calibration.py
 """
 import cv2
 import numpy as np

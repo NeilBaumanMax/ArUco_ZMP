@@ -1,8 +1,8 @@
 """
-文件用途：ArUco 标签基础检测演示（入门示例）
-- 实时检测 ArUco 标签，画面显示 XYZ 位置、欧拉角、直线距离并绘制坐标轴
-- 使用估算相机内参（基于 640x480），精度有限；实际测距请使用标定内参版本
-- 运行：python aruco_demo.py，按 q 退出
+文件用途：ArUco 位姿检测（使用标定内参，无畸变）
+- 已写入相机标定内参，畸变系数全部置 0（适用于无畸变镜头），分辨率 1280x720
+- 画面显示标签 XYZ 位置、欧拉角、直线距离并绘制坐标轴
+- 运行：python 02_detection/aruco_no_distortion.py，按 q 退出
 """
 import cv2
 import cv2.aruco as aruco
@@ -22,23 +22,17 @@ ARUCO_DICT_TYPE = aruco.DICT_6X6_250
 MARKER_SIZE = 0.1  
 
 # 3. 设置相机内参 (Camera Matrix)
-#    把标定程序算出来的 mtx 替换下面的 np.array
+#    虽然无畸变，但焦距(fx,fy)和光心(cx,cy)依然要用标定算出来的，这样Z轴测距才准
 #    格式：[[fx, 0, cx], [0, fy, cy], [0, 0, 1]]
-#    说明：
-#      fx, fy: 焦距 (像素单位)。值越大，视场角越小（看得越近）。
-#      cx, cy: 光心 (通常是图片宽高的 1/2)。
-#    (以下是基于 640x480 分辨率的估算值)
 camera_matrix = np.array([
-    [800.0, 0.0, 320.0],
-    [0.0, 800.0, 240.0],
-    [0.0, 0.0, 1.0]
+    [730.26272565,   0.        , 658.92852375],
+    [  0.        , 739.47588552, 302.48694463],
+    [  0.        ,   0.        ,   1.        ]
 ], dtype=np.float32)
 
 # 4. 设置畸变系数 (Distortion Coefficients)
-#    把标定程序算出来的 mtx 替换下面的 np.array
-#    格式：[k1, k2, p1, p2, k3]
-#    说明：描述镜头边缘变弯的程度。
-dist_coeffs = np.array([0.0, 0.0, 0.0, 0.0, 0.0], dtype=np.float32)
+#    是无畸变相机，这里全部设为 0
+dist_coeffs = np.zeros((5, 1), dtype=np.float32)
 
 
 # 二、旋转向量转换为欧拉角的函数
@@ -73,6 +67,12 @@ def main():
     # 1. 初始化摄像头 (0 代表默认摄像头)
     cap = cv2.VideoCapture(0)
     
+    # --- 设置分辨率和帧率 ---
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+    cap.set(cv2.CAP_PROP_FPS, 30)
+    # ---------------------------
+
     # 获取字典和检测参数
     aruco_dict = aruco.getPredefinedDictionary(ARUCO_DICT_TYPE)
     parameters = aruco.DetectorParameters()
