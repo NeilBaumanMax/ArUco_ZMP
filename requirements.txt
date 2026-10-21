@@ -1,0 +1,6 @@
+# ArUco 项目依赖（与开发环境 venv 中的实测版本一致）
+# 安装方式：pip install -r requirements.txt
+numpy==2.4.4
+opencv-contrib-python==4.13.0.92
+# 串口通信（仅 aruco_uart.py 启用 UART 时需要；不需要可跳过）
+pyserial==3.5
